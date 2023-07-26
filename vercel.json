@@ -1,0 +1,4 @@
+{
+  "framework": "flask",
+  "command": "python app.py"
+}
