@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Story Chatbot</title>
+    <script>
+        function startVoiceRecognition() {
+            const recognition = new webkitSpeechRecognition() || speechRecognition();
+            recognition.lang = 'en-US';
+            recognition.start();
+            recognition.onresult = function (event) {
+                const result = event.results[0][0].transcript;
+                document.getElementById("user_input").value = result;
+                document.getElementById("chat_form").submit();
+            };
+        }
+    </script>
+</head>
+<body>
+    <h1>Chat with the Story Chatbot</h1>
+    <p>You said: {{ user_input }}</p>
+    {% if response %}
+    <p>Chatbot says: {{ response }}</p>
+    {% endif %}
+    <form id="chat_form" action="/chat" method="post">
+        <input type="text" name="user_input" id="user_input" {% if not user_input %}autofocus{% endif %}>
+        <input type="button" value="Speak" onclick="startVoiceRecognition()">
+        <input type="submit" value="Send">
+    </form>
+    <script>
+        const inputField = document.querySelector("input[name='user_input']");
+        inputField.focus();
+    </script>
+</body>
+</html>
